@@ -12,8 +12,14 @@ public class Board {
         this.size = size;
     }
 
-    public boolean isMined(int x, int y) {
+    public boolean isRevealed(int x, int y) {
         return getLocation(x, y).mined;
+    }
+
+    public boolean isMined(int x, int y) {
+        Location location = getLocation(x, y);
+
+        return location == null ? null : location.mined;
     }
 
     public Location getLocation(int x, int y){
