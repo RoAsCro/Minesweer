@@ -6,10 +6,15 @@ import java.util.List;
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.5f;
 
+    private final UserInterface userInterface;
+
     private boolean firstMove = true;
     private int revealedCount = 0;
     private Board board;
-    private UserInterface userInterface;
+
+    public Game(UserInterface userInterface) {
+        this.userInterface = userInterface;
+    }
 
     public void setUp(){
         //Display welcome message
@@ -18,7 +23,7 @@ public class Game {
         // Go to play menu
         this.userInterface.display("Welcome to Minesweeper!");
         int size = this.userInterface.getInt("Please enter the size of the board.");
-        int maxMines = (int) (MAX_MINE_PERCENTAGE * size);
+        int maxMines = (int) (MAX_MINE_PERCENTAGE * size * size);
         int mines = this.userInterface.getInt("Please enter the number of mines you want (Max number - " +
                 maxMines +
                 ").", maxMines);
