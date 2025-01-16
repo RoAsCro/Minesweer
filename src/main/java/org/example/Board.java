@@ -11,6 +11,7 @@ public class Board {
     private final List<Location> locationList = new ArrayList<>();
     // On a board, the first figure is the x, the second is the y
     private final Location[][] locations;
+    private final BoardIterator iterator = new BoardIterator(this);
 
 
     public Board(int size, int mines) {
@@ -31,21 +32,27 @@ public class Board {
             current.mined = true;
             int currentX = current.coord.getX();
             int currentY = current.coord.getY();
-
             // Increases adjacency of all adjacent Locations by one
-            for (int adjX = currentX-1; adjX <= currentX+1; adjX++) {
-                for (int adjY = currentY-1; adjY <= currentY+1; adjY++) {
-                    try {
-                        getLocation(new Coordinate(adjX, adjY)).adjacency++;
-                    } catch (BoardLimitException _) {
-                    }
-                }
-            }
+            this.iterator.iterateAdjacent(c -> getLocation(c).adjacency++,
+                    current.coord);
+
+//            for (int adjX = currentX-1; adjX <= currentX+1; adjX++) {
+//                for (int adjY = currentY-1; adjY <= currentY+1; adjY++) {
+//                    try {
+//                        getLocation(new Coordinate(adjX, adjY)).adjacency++;
+//                    } catch (BoardLimitException _) {
+//                    }
+//                }
+//            }
         }
     }
 
     public int getAdjacency(Coordinate coord) {
         return getLocation(coord).adjacency;
+    }
+
+    public BoardIterator getIterator() {
+        return this.iterator;
     }
 
     public boolean isFlagged(Coordinate coord) {
@@ -122,8 +129,16 @@ public class Board {
         public void iterateAll(Consumer<Coordinate> consumer){
 
         }
-        public void iterateAdjacent(Consumer<Coordinate> consumer) {
-            
+        public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord) {
+            for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
+                for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
+                    try {
+                        consumer.accept(new Coordinate(adjX, adjY));
+                    } catch (BoardLimitException _) {
+
+                    }
+                }
+            }
         }
     }
 }
