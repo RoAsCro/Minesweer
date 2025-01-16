@@ -28,14 +28,14 @@ public class Board {
             Location current = this.locationList.remove(
                     random.nextInt(this.locationList.size()));
             current.mined = true;
-            int currentX = current.x;
-            int currentY = current.y;
+            int currentX = current.coord.getX();
+            int currentY = current.coord.getY();
 
             // Increases adjacency of all adjacent Locations by one
             for (int adjX = currentX-1; adjX <= currentX+1; adjX++) {
                 for (int adjY = currentY-1; adjY <= currentY+1; adjY++) {
                     try {
-                        getLocation(adjX, adjY).adjacency++;
+                        getLocation(new Coordinate(adjX, adjY)).adjacency++;
                     } catch (BoardLimitException _) {
                     }
                 }
@@ -43,35 +43,35 @@ public class Board {
         }
     }
 
-    public int getAdjacency(int x, int y) {
-        return getLocation(x, y).adjacency;
+    public int getAdjacency(Coordinate coord) {
+        return getLocation(coord).adjacency;
     }
 
-    public boolean isFlagged(int x, int y) {
-        return getLocation(x, y).flagged;
+    public boolean isFlagged(Coordinate coord) {
+        return getLocation(coord).flagged;
     }
 
-    public boolean isRevealed(int x, int y) {
-        return getLocation(x, y).revealed;
+    public boolean isRevealed(Coordinate coord) {
+        return getLocation(coord).revealed;
     }
 
-    public boolean isMined(int x, int y) {
-        return getLocation(x, y).mined;
+    public boolean isMined(Coordinate coord) {
+        return getLocation(coord).mined;
     }
 
-    public void flag(int x, int y) {
-        getLocation(x, y).flagged = true;
+    public void flag(Coordinate coord) {
+        getLocation(coord).flagged = true;
     }
 
-    public void reveal(int x, int y) {
-        getLocation(x, y).revealed = true;
+    public void reveal(Coordinate coord) {
+        getLocation(coord).revealed = true;
     }
 
-    public Location getLocation(int x, int y) throws BoardLimitException {
-       if (checkExceeds(x) || checkExceeds(y)) {
+    public Location getLocation(Coordinate coord) throws BoardLimitException {
+       if (checkExceeds(coord.getX()) || checkExceeds(coord.getY())) {
            throw new BoardLimitException();
        }
-       return this.locations[x][y];
+       return this.locations[coord.getX()][coord.getY()];
     }
 
     private boolean checkExceeds(int coord) {
@@ -81,7 +81,7 @@ public class Board {
     private void preGenerate() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                Location current = new Location(x, y);
+                Location current = new Location(new Coordinate(x, y));
                 this.locations[x][y] = current;
                 this.locationList.add(current);
             }
@@ -89,16 +89,14 @@ public class Board {
     }
 
     public class Location{
-        private final int x;
-        private final int y;
+        private final Coordinate coord;
         private boolean revealed = false;
         private boolean mined = false;
         private boolean flagged = false;
         private int adjacency = 0;
 
-        public Location(int x, int y) {
-            this.x = x;
-            this.y = y;
+        public Location(Coordinate coord) {
+            this.coord = coord;
         }
 
         public boolean isRevealed() {

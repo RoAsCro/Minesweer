@@ -55,11 +55,11 @@ public class Game {
         }
     }
 
-    public void flag(int x, int y) throws BoardLimitException{
+    public void flag(Coordinate coord) throws BoardLimitException{
         // exception? go back
     }
 
-    public void makeMove(int x, int y) throws BoardLimitException{
+    public void makeMove(Coordinate coord) throws BoardLimitException{
         // First move? Generate.
         // Exception? go back
         // Cascade reveals
