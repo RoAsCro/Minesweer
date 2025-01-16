@@ -71,8 +71,9 @@ public class Board {
         Location location = getLocation(coord);
         if (location.flagged){
             location.flagged = false;
+        } else {
+            location.flagged = true;
         }
-        location.flagged = true;
     }
 
     public void reveal(Coordinate coord) {
