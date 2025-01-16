@@ -125,6 +125,6 @@ public class Game {
         used.add(coord);
         this.board.reveal(coord);
         this.revealedCount++;
-        this.board.getIterator().iterateAdjacent(c -> reveal(c, used), coord);
+        this.board.getIterator().iterateAdjacent(c -> reveal(c, used), coord, false);
     }
 }

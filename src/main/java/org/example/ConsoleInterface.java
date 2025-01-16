@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class ConsoleInterface implements UserInterface {
 
-    private final static String COORD_REGEX = "^[0-9]+$,^[0-9]+$";
+    private final static String COORD_REGEX = "^[0-9]+,[0-9]+";
 
     @Override
     public int getInt(String prompt) {
