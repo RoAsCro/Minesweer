@@ -1,10 +1,18 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Board {
-    // On a board, the first figure is the x, the second is the y
-    private final Location[][] locations;
+
     private final int mines;
     private final int size;
+    // Location in list is (x+1) * y
+    private final List<Location> locationList = new ArrayList<>();
+    // On a board, the first figure is the x, the second is the y
+    private final Location[][] locations;
+
 
     public Board(int size, int mines) {
         this.locations = new Location[size][size];
@@ -15,7 +23,11 @@ public class Board {
     }
 
     public void generate(int x, int y) {
-
+        List<Location> unconsumed = new ArrayList<>(locationList);
+        unconsumed.remove((x+1) * y);
+        for (int i = 0; i < this.mines; i++) {
+            
+        }
     }
 
     public int getAdjacency(int x, int y) {
@@ -45,7 +57,9 @@ public class Board {
     private void preGenerate() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                this.locations[x][y] = new Location();
+                Location current = new Location();
+                this.locations[x][y] = current;
+                this.locationList.add(current);
             }
         }
     }
