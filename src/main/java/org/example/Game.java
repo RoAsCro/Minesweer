@@ -26,6 +26,30 @@ public class Game {
         //1 Display board
         //2 Make a move
         //3 flag a location
+        boolean go = true;
+        while (go) {
+            displayBoard();
+            int selection = this.userInterface.getInt(
+                    """
+                            Please choose one:
+                            1. Display the board
+                            2. Make a move
+                            3. Flag a location
+                            4. Exit
+                            """,
+                    4 //NO MINIMUM
+            );
+            switch (selection) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        }
     }
 
     public void flag(int x, int y) throws BoardLimitException{
