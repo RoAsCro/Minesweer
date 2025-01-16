@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleInterface implements UserInterface {
@@ -66,6 +68,7 @@ public class ConsoleInterface implements UserInterface {
     @Override
     public void displayBoard(Board board) {
         StringBuilder builder = new StringBuilder();
+        LinkedList<StringBuilder> builders = new LinkedList<>();
         StringBuilder debugBuilder = new StringBuilder();
 
         board.getIterator().iterateAll(c ->
@@ -90,13 +93,22 @@ public class ConsoleInterface implements UserInterface {
                     displayString += "\t";
                     if (c.getY() == board.getSize() - 1) {
                         displayString += "\n";
+                        builder.append(displayString);
+                        StringBuilder tempBuilder = new StringBuilder();
+                        tempBuilder.append(builder);
+                        builders.add(tempBuilder);
+                        builder.setLength(0);
                         debugBuilder.append("\n");
+                    } else {
+                        builder.append(displayString);
                     }
-                    builder.append(displayString);
 
                 }
                 );
-        display(builder.toString());
+        while (!builders.isEmpty()) {
+            display(builders.removeLast().toString());
+        }
+//        display(builder.toString());
         display(debugBuilder.toString());
     }
 }
