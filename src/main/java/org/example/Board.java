@@ -141,7 +141,7 @@ public class Board {
             for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
                 for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
                     if (!includeDiagonals) {
-                        if (adjX != 0 && adjY != 0) {
+                        if (adjX - coord.getX() != 0 && adjY - coord.getY() != 0) {
                             continue;
                         }
                     }

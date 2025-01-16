@@ -120,13 +120,16 @@ public class Game {
 
     private void reveal(Coordinate coord, List<Coordinate> used) {
         try {
-            if (used.contains(coord) || this.board.isRevealed(coord)) {
+            if (used.contains(coord)) {
                 return;
             }
         } catch (BoardLimitException e) {
             return;
         }
         used.add(coord);
+        if (this.board.isMined(coord) || this.board.isRevealed(coord)) {
+            return;
+        }
         this.board.reveal(coord);
         this.revealedCount++;
         this.board.getIterator().iterateAdjacent(c -> reveal(c, used), coord, false);

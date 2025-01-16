@@ -70,7 +70,7 @@ public class ConsoleInterface implements UserInterface {
 
         board.getIterator().iterateAll(c ->
                 {
-                    debugBuilder.append("" + c.getX()+","+c.getY());
+                    debugBuilder.append(board.isMined(c) ? "[M]" : "[]");
                     String displayString = "";
 
                     if (!board.isRevealed(c)) {
