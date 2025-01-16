@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -93,7 +94,7 @@ public class Game {
         if (this.board.isMined(coord)) {
             return false;
         }
-        // Revelation cascade
+        reveal(coord, new ArrayList<>());
         return true;
     }
     public void displayBoard(){
@@ -105,8 +106,15 @@ public class Game {
     }
 
     private void reveal(Coordinate coord, List<Coordinate> used) {
-        if (used.contains(coord)){ //MAKE COORDS COMPARABLE
-
+        try {
+            if (used.contains(coord) || this.board.isRevealed(coord)) {
+                return;
+            }
+        } catch (BoardLimitException e) {
+            return;
         }
+        used.add(coord);
+        this.board.reveal(coord);
+        this.board.getIterator().iterateAdjacent(c -> reveal(c, used), coord);
     }
 }
