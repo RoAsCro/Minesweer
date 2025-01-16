@@ -40,7 +40,7 @@ public class Game {
                             Please choose one:
                             1. Display the board
                             2. Make a move
-                            3. Flag a location
+                            3. Flag or unflag a location
                             4. Exit
                             """,
                     4 //TODO NO MINIMUM
@@ -63,7 +63,7 @@ public class Game {
                         break;
                     case 3:
                         coord = this.userInterface.getCoordinate("Please enter the coordinate " +
-                                "of the location you want to select.");
+                                "of the location you want to flag or unflag.");
                         if (coord == null) {
                             continue;
                         }
@@ -81,7 +81,7 @@ public class Game {
     }
 
     public void flag(Coordinate coord) throws BoardLimitException{
-        this.board.flag(coord);
+        this.board.flagUnflag(coord);
     }
 
     public boolean makeMove(Coordinate coord) throws BoardLimitException{

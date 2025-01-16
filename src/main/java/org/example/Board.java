@@ -7,7 +7,7 @@ public class Board {
 
     private final int mines;
     private final int size;
-    // Location in list is (x+1) * y
+    // Location in list is (x * size) + y
     private final List<Location> locationList = new ArrayList<>();
     // On a board, the first figure is the x, the second is the y
     private final Location[][] locations;
@@ -24,7 +24,7 @@ public class Board {
 
     public void generate(Coordinate coord) {
         List<Location> unconsumed = new ArrayList<>(this.locationList);
-        unconsumed.remove((coord.getX()+1) * coord.getY());
+        unconsumed.remove((coord.getX() * this.size) + coord.getY());
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
             Location current = unconsumed.remove(
@@ -36,14 +36,6 @@ public class Board {
             this.iterator.iterateAdjacent(c -> getLocation(c).adjacency++,
                     current.coord, true);
 
-//            for (int adjX = currentX-1; adjX <= currentX+1; adjX++) {
-//                for (int adjY = currentY-1; adjY <= currentY+1; adjY++) {
-//                    try {
-//                        getLocation(new Coordinate(adjX, adjY)).adjacency++;
-//                    } catch (BoardLimitException _) {
-//                    }
-//                }
-//            }
         }
     }
 
@@ -75,8 +67,12 @@ public class Board {
         return getLocation(coord).mined;
     }
 
-    public void flag(Coordinate coord) {
-        getLocation(coord).flagged = true;
+    public void flagUnflag(Coordinate coord) {
+        Location location = getLocation(coord);
+        if (location.flagged){
+            location.flagged = false;
+        }
+        location.flagged = true;
     }
 
     public void reveal(Coordinate coord) {
