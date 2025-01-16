@@ -11,6 +11,11 @@ public class Board {
         // Todo DON'T EXCEED locations
         this.mines = mines;
         this.size = size;
+        preGenerate();
+    }
+
+    public void generate(int x, int y) {
+
     }
 
     public int getAdjacency(int x, int y) {
@@ -37,14 +42,18 @@ public class Board {
         };
     }
 
-    public class Location{
-        private boolean revealed;
-        private final boolean mined;
-        private int adjacency;
-
-        public Location(boolean mined) {
-            this.mined = mined;
+    private void preGenerate() {
+        for (int x = 0; x < this.size; x++) {
+            for (int y = 0; y < this.size; y++) {
+                this.locations[x][y] = new Location();
+            }
         }
+    }
+
+    public class Location{
+        private boolean revealed = false;
+        private boolean mined = false;
+        private int adjacency = 0;
 
         public boolean isRevealed() {
             return revealed;
