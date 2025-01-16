@@ -100,6 +100,7 @@ public class Game {
         //  b. yes - adjacancy
         //
         // Hand representation of the board to interface
+        this.userInterface.displayBoard(this.board);
     }
 
     private void reveal(Coordinate coord, List<Coordinate> used) {
