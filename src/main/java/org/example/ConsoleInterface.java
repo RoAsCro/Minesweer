@@ -66,8 +66,11 @@ public class ConsoleInterface implements UserInterface {
     @Override
     public void displayBoard(Board board) {
         StringBuilder builder = new StringBuilder();
+        StringBuilder debugBuilder = new StringBuilder();
+
         board.getIterator().iterateAll(c ->
                 {
+                    debugBuilder.append("" + c.getX()+","+c.getY());
                     String displayString = "";
 
                     if (!board.isRevealed(c)) {
@@ -87,11 +90,13 @@ public class ConsoleInterface implements UserInterface {
                     displayString += "\t";
                     if (c.getY() == board.getSize() - 1) {
                         displayString += "\n";
+                        debugBuilder.append("\n");
                     }
                     builder.append(displayString);
 
                 }
                 );
         display(builder.toString());
+        display(debugBuilder.toString());
     }
 }

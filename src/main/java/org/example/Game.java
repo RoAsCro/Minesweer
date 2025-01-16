@@ -77,6 +77,7 @@ public class Game {
                 this.userInterface.display(e.getMessage());
             }
         }
+        this.userInterface.displayBoard(this.board);
     }
 
     public void flag(Coordinate coord) throws BoardLimitException{
@@ -93,6 +94,7 @@ public class Game {
             return true;
         }
         if (this.board.isMined(coord)) {
+            this.userInterface.display("You hit a bomb!");
             return false;
         }
         reveal(coord, new ArrayList<>());
@@ -100,6 +102,8 @@ public class Game {
         int size = this.board.getSize();
 
         if (revealedCount == size * size - this.board.getMines()) {
+            this.userInterface.display("No more bombs!");
+
             return false;
         }
 
