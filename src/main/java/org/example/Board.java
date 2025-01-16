@@ -27,8 +27,8 @@ public class Board {
         unconsumed.remove((coord.getX()+1) * coord.getY());
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
-            Location current = this.locationList.remove(
-                    random.nextInt(this.locationList.size()));
+            Location current = unconsumed.remove(
+                    random.nextInt(unconsumed.size()));
             current.mined = true;
             int currentX = current.coord.getX();
             int currentY = current.coord.getY();
