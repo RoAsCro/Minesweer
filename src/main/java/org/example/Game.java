@@ -1,6 +1,8 @@
 package org.example;
 
 public class Game {
+    private static final float MAX_MINE_PERCENTAGE = 0.5f;
+
     private Board board;
     private UserInterface userInterface;
 
@@ -9,6 +11,14 @@ public class Game {
         // Prompt user for size
         //Prompt user for mines/diffculty
         // Go to play menu
+        this.userInterface.display("Welcome to Minesweeper!");
+        int size = this.userInterface.getInt("Please enter the size of the board.");
+        int maxMines = (int) (MAX_MINE_PERCENTAGE * size);
+        int mines = this.userInterface.getInt("Please enter the number of mines you want (Max number - " +
+                maxMines +
+                ").", maxMines);
+        this.board = new Board(size, mines);
+        menu();
     }
 
     public void menu() {
@@ -27,7 +37,7 @@ public class Game {
         // Exception? go back
         // Cascade reveals
     }
-    public void display(){
+    public void displayBoard(){
         // 1. Revealed?
         //  a. No - Flagged?
         //  b. yes - adjacancy
