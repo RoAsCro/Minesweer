@@ -33,7 +33,7 @@ public class Board {
             int currentY = current.coord.getY();
             // Increases adjacency of all adjacent Locations by one
             this.iterator.iterateAdjacent(c -> getLocation(c).adjacency++,
-                    current.coord, true);
+                    current.coord);
 
         }
     }
@@ -134,14 +134,9 @@ public class Board {
         public void iterateAll(Consumer<Coordinate> consumer){
             this.board.locationList.forEach(l -> consumer.accept(l.coord));
         }
-        public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord, boolean includeDiagonals) {
+        public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord) {
             for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
                 for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
-                    if (!includeDiagonals) {
-                        if (adjX - coord.getX() != 0 && adjY - coord.getY() != 0) {
-                            continue;
-                        }
-                    }
                     try {
                         consumer.accept(new Coordinate(adjX, adjY));
                     } catch (BoardLimitException _) {
