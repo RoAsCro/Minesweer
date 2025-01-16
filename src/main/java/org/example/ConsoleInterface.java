@@ -4,6 +4,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleInterface implements UserInterface {
+
+    private final static String COORD_REGEX = "^[0-9]+$,^[0-9]+$";
+
     @Override
     public int getInt(String prompt) {
         return getInt(prompt, -1);
@@ -33,12 +36,31 @@ public class ConsoleInterface implements UserInterface {
 
     @Override
     public Coordinate getCoordinate(String prompt) {
-        return null;
+        while (true) {
+            display(prompt);
+            display("Please enter this as two numbers separated by a comma, " +
+                    "e.g. '2,4'");
+            display("Enter '0' to go back.");
+            Scanner reader = new Scanner(System.in);
+            String input = reader.next();
+            if (input.equals("0")) {
+                return null;
+            }
+            if (!input.matches(COORD_REGEX)) {
+                display("Not a valid input.");
+                continue;
+            }
+            String[] separated = input.split(",");
+            int[] coords = new int[2];
+            coords[0] = Integer.parseInt(separated[0]);
+            coords[1] = Integer.parseInt(separated[1]);
+            return new Coordinate(coords[0], coords[1]);
+        }
     }
 
     @Override
     public void display(String prompt) {
-
+        System.out.println(prompt);
     }
 
     @Override

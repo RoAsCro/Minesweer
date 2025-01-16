@@ -49,6 +49,9 @@ public class Game {
                     case 2:
                         coord = this.userInterface.getCoordinate("Please enter the coordinate " +
                                 "of the location you want to select.");
+                        if (coord == null) {
+                            continue;
+                        }
                         if (!makeMove(coord)){
                             go = false;
                         }
@@ -56,6 +59,9 @@ public class Game {
                     case 3:
                         coord = this.userInterface.getCoordinate("Please enter the coordinate " +
                                 "of the location you want to select.");
+                        if (coord == null) {
+                            continue;
+                        }
                         flag(coord);
                         break;
                     case 4:
