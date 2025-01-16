@@ -39,18 +39,30 @@ public class Game {
                             """,
                     4 //TODO NO MINIMUM
             );
-            switch (selection) {
-                case 1:
-                    displayBoard();
-                    break;
-                case 2:
-                    this.userInterface.getCoordinate("Please enter the coordinate " +
-                            "of the location you want to select.");
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
+            try {
+                Coordinate coord;
+                switch (selection) {
+                    case 1:
+                        displayBoard();
+                        break;
+                    case 2:
+                        coord = this.userInterface.getCoordinate("Please enter the coordinate " +
+                                "of the location you want to select.");
+                        if (!makeMove(coord)){
+                            go = false;
+                        }
+                        break;
+                    case 3:
+                        coord = this.userInterface.getCoordinate("Please enter the coordinate " +
+                                "of the location you want to select.");
+                        flag(coord);
+                        break;
+                    case 4:
+                        go = false;
+                        break;
+                }
+            } catch (BoardLimitException e) {
+                this.userInterface.display(e.getMessage());
             }
         }
     }
@@ -59,10 +71,11 @@ public class Game {
         // exception? go back
     }
 
-    public void makeMove(Coordinate coord) throws BoardLimitException{
+    public boolean makeMove(Coordinate coord) throws BoardLimitException{
         // First move? Generate.
         // Exception? go back
         // Cascade reveals
+        // Game over
     }
     public void displayBoard(){
         // 1. Revealed?
