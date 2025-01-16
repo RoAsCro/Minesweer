@@ -69,9 +69,7 @@ public class ConsoleInterface implements UserInterface {
         board.getIterator().iterateAll(c ->
                 {
                     String displayString = "";
-                    if (c.getX() == 0) {
-                        displayString += "\t";
-                    }
+
                     if (!board.isRevealed(c)) {
                         if (board.isFlagged(c)) {
                             displayString += "f";
@@ -87,7 +85,11 @@ public class ConsoleInterface implements UserInterface {
                         }
                     }
                     displayString += "\t";
+                    if (c.getY() == board.getSize() - 1) {
+                        displayString += "\n";
+                    }
                     builder.append(displayString);
+
                 }
                 );
         display(builder.toString());
