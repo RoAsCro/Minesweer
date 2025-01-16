@@ -67,7 +67,7 @@ public class Board {
         getLocation(x, y).revealed = true;
     }
 
-    public Location getLocation(int x, int y){
+    public Location getLocation(int x, int y) throws BoardLimitException {
        if (checkExceeds(x) || checkExceeds(y)) {
            throw new BoardLimitException();
        }
