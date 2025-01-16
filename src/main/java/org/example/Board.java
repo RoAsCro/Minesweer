@@ -20,9 +20,9 @@ public class Board {
         preGenerate();
     }
 
-    public void generate(int x, int y) {
+    public void generate(Coordinate coord) {
         List<Location> unconsumed = new ArrayList<>(this.locationList);
-        unconsumed.remove((x+1) * y);
+        unconsumed.remove((coord.getX()+1) * coord.getY());
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
             Location current = this.locationList.remove(

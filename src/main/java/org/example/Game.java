@@ -3,6 +3,7 @@ package org.example;
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.5f;
 
+    private boolean firstMove = true;
     private Board board;
     private UserInterface userInterface;
 
@@ -68,14 +69,30 @@ public class Game {
     }
 
     public void flag(Coordinate coord) throws BoardLimitException{
-        // exception? go back
+        this.board.flag(coord);
     }
 
     public boolean makeMove(Coordinate coord) throws BoardLimitException{
         // First move? Generate.
         // Exception? go back
+        // is revealed? go back
+        // [Is flagged? Cofnirm]
+        // Is mined? Game over
         // Cascade reveals
         // Game over
+        if (this.firstMove) {
+            this.board.generate(coord);
+            this.firstMove = false;
+        }
+        if (this.board.isRevealed(coord)){
+            this.userInterface.display("That location is already revealed!");
+            return true;
+        }
+        if (this.board.isMined(coord)) {
+            return false;
+        }
+        // Revelation cascade
+        return true;
     }
     public void displayBoard(){
         // 1. Revealed?
