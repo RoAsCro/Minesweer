@@ -55,6 +55,14 @@ public class Board {
         return this.iterator;
     }
 
+    public int getMines(){
+        return this.mines;
+    }
+
+    public int getSize(){
+        return this.size;
+    }
+
     public boolean isFlagged(Coordinate coord) {
         return getLocation(coord).flagged;
     }

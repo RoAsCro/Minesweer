@@ -82,7 +82,7 @@ public class Game {
         // [Is flagged? Cofnirm]
         // Is mined? Game over
         // Cascade reveals
-        // Game over
+        // Check for game over
         if (this.firstMove) {
             this.board.generate(coord);
             this.firstMove = false;
