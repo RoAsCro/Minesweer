@@ -1,6 +1,7 @@
 package org.example;
 
 public class Board {
+    // On a board, the first figure is the x, the second is the y
     private final Location[][] locations;
     private final int mines;
     private final int size;
@@ -12,25 +13,28 @@ public class Board {
         this.size = size;
     }
 
+    public int getAdjacency(int x, int y) {
+        return getLocation(x, y).adjacency;
+    }
+
     public boolean isRevealed(int x, int y) {
-        return getLocation(x, y).mined;
+        return getLocation(x, y).revealed;
     }
 
     public boolean isMined(int x, int y) {
-        Location location = getLocation(x, y);
-
-        return location == null ? null : location.mined;
+        return getLocation(x, y).mined;
     }
 
     public Location getLocation(int x, int y){
-        if (checkExceeds(x) || checkExceeds(y)) {
-            return null;
-        }
+       checkExceeds(x);
+       checkExceeds(y);
         return this.locations[x][y];
     }
 
-    private boolean checkExceeds(int coord) {
-        return coord < 0 || coord >= this.size;
+    private void checkExceeds(int coord) {
+        if (coord < 0 || coord >= this.size) {
+            throw new BoardLimitException();
+        };
     }
 
     public class Location{
