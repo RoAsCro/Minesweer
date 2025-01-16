@@ -37,12 +37,15 @@ public class Game {
                             3. Flag a location
                             4. Exit
                             """,
-                    4 //NO MINIMUM
+                    4 //TODO NO MINIMUM
             );
             switch (selection) {
                 case 1:
+                    displayBoard();
                     break;
                 case 2:
+                    this.userInterface.getCoordinate("Please enter the coordinate " +
+                            "of the location you want to select.");
                     break;
                 case 3:
                     break;
