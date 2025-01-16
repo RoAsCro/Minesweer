@@ -10,13 +10,12 @@ public class Board {
     // Location in list is (x * size) + y
     private final List<Location> locationList = new ArrayList<>();
     // On a board, the first figure is the x, the second is the y
-    private final Location[][] locations;
+//    private final Location[][] locations;
     private final BoardIterator iterator = new BoardIterator(this);
 
 
     public Board(int size, int mines) {
-        this.locations = new Location[size][size];
-        // Todo DON'T EXCEED locations
+//        this.locations = new Location[size][size];
         this.mines = mines;
         this.size = size;
         preGenerate();
@@ -84,7 +83,8 @@ public class Board {
        if (checkExceeds(coord.getX()) || checkExceeds(coord.getY())) {
            throw new BoardLimitException();
        }
-       return this.locations[coord.getX()][coord.getY()];
+       return this.locationList.get((coord.getX() * this.size) + coord.getY());
+//       return this.locations[coord.getX()][coord.getY()];
     }
 
     private boolean checkExceeds(int coord) {
@@ -95,7 +95,7 @@ public class Board {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
                 Location current = new Location(new Coordinate(x, y));
-                this.locations[x][y] = current;
+//                this.locations[x][y] = current;
                 this.locationList.add(current);
             }
         }

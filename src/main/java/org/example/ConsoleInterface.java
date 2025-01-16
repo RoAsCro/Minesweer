@@ -78,7 +78,7 @@ public class ConsoleInterface implements UserInterface {
 
                     if (!board.isRevealed(c)) {
                         if (board.isFlagged(c)) {
-                            displayString += "f";
+                            displayString += "[f]";
                         } else {
                             displayString += "[X]";
                         }
@@ -87,7 +87,7 @@ public class ConsoleInterface implements UserInterface {
                         if (adjacency == 0) {
                             displayString += "[ ]";
                         } else {
-                            displayString += "" + adjacency;
+                            displayString += "[" + adjacency + "]";
                         }
                     }
                     displayString += "\t";
