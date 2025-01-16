@@ -135,7 +135,7 @@ public class Board {
             this.board = board;
         }
         public void iterateAll(Consumer<Coordinate> consumer){
-
+            this.board.locationList.forEach(l -> consumer.accept(l.coord));
         }
         public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord) {
             for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
@@ -143,7 +143,7 @@ public class Board {
                     try {
                         consumer.accept(new Coordinate(adjX, adjY));
                     } catch (BoardLimitException _) {
-
+                        // Todo reconsider
                     }
                 }
             }
