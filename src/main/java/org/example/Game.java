@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.List;
+
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.5f;
 
@@ -100,5 +102,11 @@ public class Game {
         //  b. yes - adjacancy
         //
         // Hand representation of the board to interface
+    }
+
+    private void reveal(Coordinate coord, List<Coordinate> used) {
+        if (used.contains(coord)){ //MAKE COORDS COMPARABLE
+
+        }
     }
 }
