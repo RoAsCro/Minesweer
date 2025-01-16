@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Board {
 
@@ -23,10 +21,13 @@ public class Board {
     }
 
     public void generate(int x, int y) {
-        List<Location> unconsumed = new ArrayList<>(locationList);
+        List<Location> unconsumed = new ArrayList<>(this.locationList);
         unconsumed.remove((x+1) * y);
+        Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
-            
+            int coord = random.nextInt(this.locationList.size());
+            this.locationList.remove()
+                    .mined = true;
         }
     }
 
@@ -45,7 +46,7 @@ public class Board {
     public Location getLocation(int x, int y){
        checkExceeds(x);
        checkExceeds(y);
-        return this.locations[x][y];
+       return this.locations[x][y];
     }
 
     private void checkExceeds(int coord) {
@@ -57,7 +58,7 @@ public class Board {
     private void preGenerate() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                Location current = new Location();
+                Location current = new Location(x, y);
                 this.locations[x][y] = current;
                 this.locationList.add(current);
             }
@@ -68,6 +69,13 @@ public class Board {
         private boolean revealed = false;
         private boolean mined = false;
         private int adjacency = 0;
+        private final int x;
+        private final int y;
+
+        public Location(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
         public boolean isRevealed() {
             return revealed;
