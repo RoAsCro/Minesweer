@@ -47,12 +47,20 @@ public class Board {
         return getLocation(x, y).adjacency;
     }
 
+    public boolean isFlagged(int x, int y) {
+        return getLocation(x, y).flagged;
+    }
+
     public boolean isRevealed(int x, int y) {
         return getLocation(x, y).revealed;
     }
 
     public boolean isMined(int x, int y) {
         return getLocation(x, y).mined;
+    }
+
+    public void flag(int x, int y) {
+        getLocation(x, y).flagged = true;
     }
 
     public void reveal(int x, int y) {
@@ -85,6 +93,7 @@ public class Board {
         private final int y;
         private boolean revealed = false;
         private boolean mined = false;
+        private boolean flagged = false;
         private int adjacency = 0;
 
         public Location(int x, int y) {
