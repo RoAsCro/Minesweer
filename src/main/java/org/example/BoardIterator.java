@@ -1,4 +1,5 @@
 package org.example;
 
-public class BoardIterator {
-}
+import java.util.function.Consumer;
+
+

@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Board {
 
@@ -109,6 +110,20 @@ public class Board {
 
         public int getAdjacency() {
             return adjacency;
+        }
+    }
+
+    public class BoardIterator {
+        private final Board board;
+
+        public BoardIterator(Board board) {
+            this.board = board;
+        }
+        public void iterateAll(Consumer<Coordinate> consumer){
+
+        }
+        public void iterateAdjacent(Consumer<Coordinate> consumer) {
+            
         }
     }
 }
