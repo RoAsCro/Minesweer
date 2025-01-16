@@ -7,6 +7,7 @@ public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.5f;
 
     private boolean firstMove = true;
+    private int revealedCount = 0;
     private Board board;
     private UserInterface userInterface;
 
@@ -26,10 +27,6 @@ public class Game {
     }
 
     public void menu() {
-        // Display the board
-        //1 Display board
-        //2 Make a move
-        //3 flag a location
         boolean go = true;
         while (go) {
             displayBoard();
@@ -76,13 +73,6 @@ public class Game {
     }
 
     public boolean makeMove(Coordinate coord) throws BoardLimitException{
-        // First move? Generate.
-        // Exception? go back
-        // is revealed? go back
-        // [Is flagged? Cofnirm]
-        // Is mined? Game over
-        // Cascade reveals
-        // Check for game over
         if (this.firstMove) {
             this.board.generate(coord);
             this.firstMove = false;
@@ -95,6 +85,13 @@ public class Game {
             return false;
         }
         reveal(coord, new ArrayList<>());
+
+        int size = this.board.getSize();
+
+        if (revealedCount == size * size - this.board.getMines()) {
+            return false;
+        }
+
         return true;
     }
     public void displayBoard(){
@@ -115,6 +112,7 @@ public class Game {
         }
         used.add(coord);
         this.board.reveal(coord);
+        this.revealedCount++;
         this.board.getIterator().iterateAdjacent(c -> reveal(c, used), coord);
     }
 }
