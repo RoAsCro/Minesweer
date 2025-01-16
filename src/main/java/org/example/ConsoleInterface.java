@@ -65,6 +65,31 @@ public class ConsoleInterface implements UserInterface {
 
     @Override
     public void displayBoard(Board board) {
-
+        StringBuilder builder = new StringBuilder();
+        board.getIterator().iterateAll(c ->
+                {
+                    String displayString = "";
+                    if (c.getX() == 0) {
+                        displayString += "\t";
+                    }
+                    if (!board.isRevealed(c)) {
+                        if (board.isFlagged(c)) {
+                            displayString += "f";
+                        } else {
+                            displayString += "[X]";
+                        }
+                    } else {
+                        int adjacency = board.getAdjacency(c);
+                        if (adjacency == 0) {
+                            displayString += "[ ]";
+                        } else {
+                            displayString += "" + adjacency;
+                        }
+                    }
+                    displayString += "\t";
+                    builder.append(displayString);
+                }
+                );
+        display(builder.toString());
     }
 }
