@@ -120,6 +120,7 @@ public class GUIInterface implements UserInterface {
                     {
                         CoordButton button = this.buttonMap.get(c);
                         if (board.isRevealed(c)) {
+                            button.setBackground(Color.white);
                             int adj = board.getAdjacency(c);
                             if (adj == 0) {
                                 button.setText("");
