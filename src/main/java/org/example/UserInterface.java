@@ -18,5 +18,5 @@ public interface UserInterface {
      */
     Coordinate getCoordinate(String prompt);
     void display(String prompt);
-    void displayBoard(Board board);
+    void displayBoard(Board board, boolean showBombs);
 }

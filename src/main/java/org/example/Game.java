@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static final float MAX_MINE_PERCENTAGE = 0.5f;
+    private static final float MAX_MINE_PERCENTAGE = 0.25f;
 
     private final UserInterface userInterface;
 
@@ -17,16 +17,12 @@ public class Game {
     }
 
     public void setUp(){
-        //Display welcome message
-        // Prompt user for size
-        //Prompt user for mines/diffculty
-        // Go to play menu
         this.userInterface.display("Welcome to Minesweeper!");
-        int size = this.userInterface.getInt("Please enter the size of the board.");
+        int size = this.userInterface.getInt("Please enter the desired length of the board - boards are square.");
         int maxMines = (int) (MAX_MINE_PERCENTAGE * size * size);
-        int mines = this.userInterface.getInt("Please enter the number of mines you want (Max number - " +
+        int mines = this.userInterface.getInt("Please enter the number of mines you want (no more than " +
                 maxMines +
-                ").", maxMines);
+                " are recommended).", size * size - 9);
         this.board = new Board(size, mines);
         menu();
     }
@@ -43,7 +39,7 @@ public class Game {
                             3. Flag or unflag a location
                             4. Exit
                             """,
-                    4 //TODO NO MINIMUM
+                    4
             );
             try {
                 Coordinate coord;
@@ -77,7 +73,7 @@ public class Game {
                 this.userInterface.display(e.getMessage());
             }
         }
-        this.userInterface.displayBoard(this.board);
+        this.userInterface.displayBoard(this.board, true);
     }
 
     public void flag(Coordinate coord) throws BoardLimitException{
@@ -102,7 +98,7 @@ public class Game {
         int size = this.board.getSize();
 
         if (revealedCount == size * size - this.board.getMines()) {
-            this.userInterface.display("No more bombs!");
+            this.userInterface.display("You win!");
 
             return false;
         }
@@ -110,12 +106,7 @@ public class Game {
         return true;
     }
     public void displayBoard(){
-        // 1. Revealed?
-        //  a. No - Flagged?
-        //  b. yes - adjacancy
-        //
-        // Hand representation of the board to interface
-        this.userInterface.displayBoard(this.board);
+        this.userInterface.displayBoard(this.board, false);
     }
 
     private void reveal(Coordinate coord, List<Coordinate> used) {

@@ -66,18 +66,23 @@ public class ConsoleInterface implements UserInterface {
     }
 
     @Override
-    public void displayBoard(Board board) {
+    public void displayBoard(Board board, boolean showBombs) {
         StringBuilder builder = new StringBuilder();
-        LinkedList<StringBuilder> builders = new LinkedList<>();
-        StringBuilder debugBuilder = new StringBuilder();
+        LinkedList<String> rows = new LinkedList<>();
 
         board.getIterator().iterateAll(c ->
                 {
-                    debugBuilder.append(board.isMined(c) ? "[M]" : "[]");
                     String displayString = "";
 
                     if (!board.isRevealed(c)) {
-                        if (board.isFlagged(c)) {
+                        if (showBombs) {
+                            if (board.isMined(c)) {
+                                displayString += "[B]";
+                            } else {
+                                displayString += "[X]";
+                            }
+                        }
+                        else if (board.isFlagged(c)) {
                             displayString += "[f]";
                         } else {
                             displayString += "[X]";
@@ -91,24 +96,28 @@ public class ConsoleInterface implements UserInterface {
                         }
                     }
                     displayString += "\t";
-                    if (c.getY() == board.getSize() - 1) {
+                    if (c.getX() == board.getSize() - 1) {
                         displayString += "\n";
                         builder.append(displayString);
-                        StringBuilder tempBuilder = new StringBuilder();
-                        tempBuilder.append(builder);
-                        builders.add(tempBuilder);
+                        rows.add(builder.toString());
                         builder.setLength(0);
-                        debugBuilder.append("\n");
                     } else {
                         builder.append(displayString);
                     }
 
                 }
                 );
-        while (!builders.isEmpty()) {
-            display(builders.removeLast().toString());
+        StringBuilder displayBuilder = new StringBuilder();
+        int currentY = board.getSize() - 1;
+        while (!rows.isEmpty()) {
+            displayBuilder.append(currentY).append("\t");
+            displayBuilder.append(rows.removeLast());
+            currentY--;
         }
-//        display(builder.toString());
-        display(debugBuilder.toString());
+        displayBuilder.append("\t");
+        for (int i = 0; i < board.getSize(); i++) {
+            displayBuilder.append(i).append("\t");
+        }
+        display(displayBuilder.toString());
     }
 }

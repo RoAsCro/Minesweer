@@ -7,30 +7,35 @@ public class Board {
 
     private final int mines;
     private final int size;
-    // Location in list is (x * size) + y
+    // Location in list is (x + y * size)
     private final List<Location> locationList = new ArrayList<>();
     // On a board, the first figure is the x, the second is the y
-//    private final Location[][] locations;
     private final BoardIterator iterator = new BoardIterator(this);
 
 
     public Board(int size, int mines) {
-//        this.locations = new Location[size][size];
         this.mines = mines;
         this.size = size;
         preGenerate();
     }
 
     public void generate(Coordinate coord) {
-        List<Location> unconsumed = new ArrayList<>(this.locationList);
-        unconsumed.remove((coord.getX() * this.size) + coord.getY());
+        getLocation(coord);
+        List<Coordinate> ignore = new LinkedList<>();
+        // Start location and all adjacent locations will not be mined
+        this.iterator.iterateAdjacent(c -> {
+            getLocation(c); //Running this prevents null pointer exceptions
+            ignore.add(c);},
+                coord);
+        List<Location> unconsumed = new ArrayList<>();
+        this.locationList.stream()
+                .filter(l -> !ignore.contains(l.coord))
+                .forEach(unconsumed::add);
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
             Location current = unconsumed.remove(
                     random.nextInt(unconsumed.size()));
             current.mined = true;
-            int currentX = current.coord.getX();
-            int currentY = current.coord.getY();
             // Increases adjacency of all adjacent Locations by one
             this.iterator.iterateAdjacent(c -> getLocation(c).adjacency++,
                     current.coord);
@@ -79,12 +84,11 @@ public class Board {
         getLocation(coord).revealed = true;
     }
 
-    public Location getLocation(Coordinate coord) throws BoardLimitException {
+    private Location getLocation(Coordinate coord) throws BoardLimitException {
        if (checkExceeds(coord.getX()) || checkExceeds(coord.getY())) {
            throw new BoardLimitException();
        }
-       return this.locationList.get((coord.getX() * this.size) + coord.getY());
-//       return this.locations[coord.getX()][coord.getY()];
+       return this.locationList.get((coord.getX() ) + coord.getY() * this.size);
     }
 
     private boolean checkExceeds(int coord) {
@@ -94,14 +98,13 @@ public class Board {
     private void preGenerate() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                Location current = new Location(new Coordinate(x, y));
-//                this.locations[x][y] = current;
+                Location current = new Location(new Coordinate(y, x));
                 this.locationList.add(current);
             }
         }
     }
 
-    public class Location{
+    private class Location{
         private final Coordinate coord;
         private boolean revealed = false;
         private boolean mined = false;
@@ -110,18 +113,6 @@ public class Board {
 
         public Location(Coordinate coord) {
             this.coord = coord;
-        }
-
-        public boolean isRevealed() {
-            return revealed;
-        }
-
-        public boolean isMined() {
-            return this.mined;
-        }
-
-        public int getAdjacency() {
-            return adjacency;
         }
     }
 
@@ -140,6 +131,7 @@ public class Board {
                     try {
                         consumer.accept(new Coordinate(adjX, adjY));
                     } catch (BoardLimitException _) {
+                        continue;
                         // Todo reconsider
                     }
                 }
