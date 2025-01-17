@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class GUIInterface implements UserInterface {
@@ -52,34 +50,6 @@ public class GUIInterface implements UserInterface {
 
     }
 
-    public static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("HelloWorldSwing");
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel gridPanel = new JPanel(new GridLayout());
-        frame.setLayout(new GridLayout(2, 1));
-
-        frame.add(panel);
-        frame.add(gridPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JButton button = new JButton("Button");
-        JButton button2 = new JButton("Button2");
-        //Add the ubiquitous "Hello World" label.
-        JLabel label = new JLabel("Hello World");
-        panel.add(label);
-        gridPanel.add(button);
-        gridPanel.add(button2);
-
-//        frame.getContentPane().add(label);
-//        frame.getContentPane().add(button);
-//        frame.setLayout(new GridLayout());
-
-        //Display the window.
-//        frame.pack();
-        frame.setVisible(true);
-    }
-
     @Override
     public int getInt(String prompt) {
         return getInt(prompt, -1);
@@ -92,7 +62,6 @@ public class GUIInterface implements UserInterface {
         }
         System.out.println("int");
         input = -1;
-//        new Scanner(System.in).next();
         while (input == -1) {
             try {
                 wait(500);
