@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.25f;
+    private static final int MINE_DEDUCTION = 9;
+    private static final int BOARD_MIN = 5;
 
     private final UserInterface userInterface;
 
@@ -18,11 +20,19 @@ public class Game {
 
     public void setUp(){
         this.userInterface.display("Welcome to Minesweeper!");
-        int size = this.userInterface.getInt("Please enter the desired length of the board - boards are square.");
+        int size = 0;
+        while (size < BOARD_MIN) {
+            size = this.userInterface
+                    .getInt("Please enter the desired length of the board - boards are square.");
+            if (size < BOARD_MIN) {
+                this.userInterface.display("The board must be at least length " + BOARD_MIN + ".");
+            }
+        }
+
         int maxMines = (int) (MAX_MINE_PERCENTAGE * size * size);
         int mines = this.userInterface.getInt("Please enter the number of mines you want (no more than " +
                 maxMines +
-                " are recommended).", size * size - 9);
+                " are recommended).", size * size - MINE_DEDUCTION);
         this.board = new Board(size, mines);
         menu();
     }
@@ -49,7 +59,8 @@ public class Game {
                         break;
                     case 2:
                         coord = this.userInterface.getCoordinate("Please enter the coordinate " +
-                                "of the location you want to select.");
+                                "of the location you want to select.\n" +
+                                "(Coordinates should be x,y - enter the column first, then the row)");
                         if (coord == null) {
                             continue;
                         }
@@ -59,7 +70,8 @@ public class Game {
                         break;
                     case 3:
                         coord = this.userInterface.getCoordinate("Please enter the coordinate " +
-                                "of the location you want to flag or unflag.");
+                                "of the location you want to flag or unflag.\n" +
+                                "Coordinates should be x,y - enter the column first, then the row)");
                         if (coord == null) {
                             continue;
                         }
@@ -106,6 +118,9 @@ public class Game {
         return true;
     }
     public void displayBoard(){
+        int size = this.board.getSize();
+        this.userInterface.display("There are currently " + (size * size - this.revealedCount) +
+                " safe squares left to uncover.");
         this.userInterface.displayBoard(this.board, false);
     }
 
