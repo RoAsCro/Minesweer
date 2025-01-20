@@ -23,9 +23,7 @@ public class Board {
         getLocation(coord);
         List<Coordinate> ignore = new LinkedList<>();
         // Start location and all adjacent locations will not be mined
-        this.iterator.iterateAdjacent(c -> {
-            //Running this prevents null pointer exceptions
-            ignore.add(c);},
+        this.iterator.iterateAdjacent(ignore::add,
                 coord);
         List<Location> unconsumed = new ArrayList<>(this.locationList);
         Random random = new Random();
@@ -74,11 +72,7 @@ public class Board {
 
     public void flagUnflag(Coordinate coord) {
         Location location = getLocation(coord);
-        if (location.flagged){
-            location.flagged = false;
-        } else {
-            location.flagged = true;
-        }
+        location.flagged = !location.flagged;
     }
 
     public void reveal(Coordinate coord) {
