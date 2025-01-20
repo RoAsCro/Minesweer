@@ -23,8 +23,11 @@ public class GUIInterface implements UserInterface {
     private final JTextField field = new JTextField();
     private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
     private final Color buttonColor = new JButton().getBackground();
+    private final JLabel timerDisplay = new JLabel();
+    private final Timer timer;
 
     private boolean firstDisplay = true;
+    private int time = 0;
     private int inputInt =-1;
     private Coordinate inputCoord = null;
 
@@ -32,6 +35,8 @@ public class GUIInterface implements UserInterface {
     public GUIInterface(){
         this.frame.add(this.displayPanel);
         this.displayPanel.add(notificationLabel);
+        this.displayPanel.add(timerDisplay);
+        this.timer = new Timer(1000, e -> timerDisplay.setText("Time taken: " + (time+=1)));
         this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -129,23 +134,24 @@ public class GUIInterface implements UserInterface {
                 JPanel row = new JPanel();
                 row.setLayout(new GridLayout(1, board.getSize()));
                 for (int j = 0; j < board.getSize(); j++) {
-
-                    CoordButton button = new CoordButton(i, j);
+                    Coordinate buttonCoord = new Coordinate(i, j);
+                    CoordButton button = new CoordButton(buttonCoord);
                     button.setSize(BUTTON_SIZE, BUTTON_SIZE);
                     button.setText("?");
-                    this.buttonMap.put(new Coordinate(i, j), button);
+                    this.buttonMap.put(buttonCoord, button);
                     row.add(button);
                 }
                 this.frame.add(row);
             }
             this.frame.pack();
+            timer.start();
             this.firstDisplay = false;
         } else {
             board.getIterator().iterateAll(c ->
                     {
                         CoordButton button = this.buttonMap.get(c);
                         if (board.isRevealed(c)) {
-                            button.setBackground(Color.white);
+                            button.setBackground(Color.WHITE);
                             int adj = board.getAdjacency(c);
                             if (adj == 0) {
                                 button.setText("");
@@ -169,14 +175,18 @@ public class GUIInterface implements UserInterface {
                         }
                     }
             );
+            if (showBombs) {
+                this.timer.stop();
+            }
         }
 
     }
+
     private class CoordButton extends JButton {
         Coordinate buttonCoord;
 
-        public CoordButton(int x, int y) {
-            this.buttonCoord = new Coordinate(x, y);
+        public CoordButton(Coordinate buttonCoord) {
+            this.buttonCoord = buttonCoord;
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {}

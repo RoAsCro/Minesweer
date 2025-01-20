@@ -165,6 +165,7 @@ public class Game {
         stack.add(coord);
     }
 
+    @Deprecated
     private void reveal(Coordinate coord, List<Coordinate> used) {
         try {
             if (used.contains(coord)) {
