@@ -6,16 +6,11 @@ public class Main {
         if (args.length == 0) {
             userInterface = new GUIInterface();
         } else {
-            switch (args[0]) {
-                case "console":
-                    userInterface = new ConsoleInterface();
-                    break;
-                case "gui":
-                    userInterface = new GUIInterface();
-                    break;
-                default:
-                    userInterface = new GUIInterface();
-            }
+            userInterface = switch (args[0]) {
+                case "console" -> new ConsoleInterface();
+                case "gui" -> new GUIInterface();
+                default -> new GUIInterface();
+            };
         }
         Game game = new Game(userInterface);
         game.setUp();
