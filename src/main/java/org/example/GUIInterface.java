@@ -25,12 +25,17 @@ public class GUIInterface implements UserInterface {
     private int input =-1;
     private String coord = null;
     private Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
-    private Color buttonColor = null;
+    private Color buttonColor = new JButton().getBackground();
 
     public GUIInterface(){
         frame.add(displayPanel);
         displayPanel.add(notificationLabel);
-
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                    System.exit(0);
+            }
+        });
 
         frame.setLayout(new GridLayout(GRID_ROWS, GRID_COLS));
 
@@ -128,10 +133,8 @@ public class GUIInterface implements UserInterface {
                     CoordButton button = new CoordButton(i, j);
                     button.setSize(BUTTON_SIZE, BUTTON_SIZE);
                     button.setText("?");
-                    buttonMap.put(new Coordinate(i, j), button);
+                    this.buttonMap.put(new Coordinate(i, j), button);
                     row.add(button);
-                    this.buttonColor = button.getBackground();
-
                 }
                 this.frame.add(row);
             }
