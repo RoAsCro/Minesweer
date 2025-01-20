@@ -3,13 +3,19 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         UserInterface userInterface;
-        // TODO Make switch
         if (args.length == 0) {
             userInterface = new GUIInterface();
-        } else if (args[0].equals("console")) {
-            userInterface = new ConsoleInterface();
         } else {
-            userInterface = new GUIInterface();
+            switch (args[0]) {
+                case "console":
+                    userInterface = new ConsoleInterface();
+                    break;
+                case "gui":
+                    userInterface = new GUIInterface();
+                    break;
+                default:
+                    userInterface = new GUIInterface();
+            }
         }
         Game game = new Game(userInterface);
         game.setUp();
