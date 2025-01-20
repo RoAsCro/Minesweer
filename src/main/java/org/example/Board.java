@@ -85,15 +85,8 @@ public class Board {
         getLocation(coord).revealed = true;
     }
 
-    private Location getLocation(Coordinate coord) throws BoardLimitException {
-       if (checkExceeds(coord.getX()) || checkExceeds(coord.getY())) {
-           throw new BoardLimitException();
-       }
-       return this.locationList.get((coord.getX() ) + coord.getY() * this.size);
-    }
-
-    private boolean checkExceeds(int coord) {
-        return coord < 0 || coord >= this.size;
+    private Location getLocation(Coordinate coord) {
+       return this.locationList.get(coord.getX() + coord.getY() * this.size);
     }
 
     private void preGenerate() {
@@ -129,11 +122,11 @@ public class Board {
         public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord) {
             for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
                 for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
-                    try {
-                        consumer.accept(new Coordinate(adjX, adjY));
-                    } catch (BoardLimitException ignore) {
+                    if (coord.getX() < 0 || coord.getY() < 0 ||
+                            coord.getY() > this.board.getSize() || coord.getX() > this.board.getSize()){
                         continue;
                     }
+                    consumer.accept(new Coordinate(adjX, adjY));
                 }
             }
         }

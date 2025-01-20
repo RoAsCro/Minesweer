@@ -56,48 +56,44 @@ public class Game {
                             """,
                     4
             );
-            try {
-                Coordinate coord;
-                switch (selection) {
-                    case 1:
-                        displayBoard();
-                        break;
-                    case 2:
-                        coord = getAndValidateCoordinate("Please enter the coordinate " +
-                                "of the location you want to select.\n" +
-                                "(Coordinates should be x,y - enter the column first, then the row)");
-                        if (coord == null) {
-                            continue;
-                        }
-                        if (!makeMove(coord)){
-                            go = false;
-                        }
-                        break;
-                    case 3:
-                        coord = getAndValidateCoordinate("Please enter the coordinate " +
-                                "of the location you want to flag or unflag.\n" +
-                                "Coordinates should be x,y - enter the column first, then the row)");
-                        if (coord == null) {
-                            continue;
-                        }
-                        flag(coord);
-                        break;
-                    case 4:
+            Coordinate coord;
+            switch (selection) {
+                case 1:
+                    displayBoard();
+                    break;
+                case 2:
+                    coord = getAndValidateCoordinate("Please enter the coordinate " +
+                            "of the location you want to select.\n" +
+                            "(Coordinates should be x,y - enter the column first, then the row)");
+                    if (coord == null) {
+                        continue;
+                    }
+                    if (!makeMove(coord)){
                         go = false;
-                        break;
-                }
-            } catch (BoardLimitException e) {
-                this.userInterface.display(e.getMessage());
+                    }
+                    break;
+                case 3:
+                    coord = getAndValidateCoordinate("Please enter the coordinate " +
+                            "of the location you want to flag or unflag.\n" +
+                            "Coordinates should be x,y - enter the column first, then the row)");
+                    if (coord == null) {
+                        continue;
+                    }
+                    flag(coord);
+                    break;
+                case 4:
+                    go = false;
+                    break;
             }
         }
         this.userInterface.displayBoard(this.board, true);
     }
 
-    public void flag(Coordinate coord) throws BoardLimitException{
+    public void flag(Coordinate coord) {
         this.board.flagUnflag(coord);
     }
 
-    public boolean makeMove(Coordinate coord) throws BoardLimitException{
+    public boolean makeMove(Coordinate coord) {
         if (this.board.isFlagged(coord)) {
             this.userInterface.display("You can't reveal a flagged square!");
             return true;
@@ -180,11 +176,7 @@ public class Game {
 
     @Deprecated
     private void reveal(Coordinate coord, List<Coordinate> used) {
-        try {
-            if (used.contains(coord)) {
-                return;
-            }
-        } catch (BoardLimitException e) {
+        if (used.contains(coord)) {
             return;
         }
         used.add(coord);
