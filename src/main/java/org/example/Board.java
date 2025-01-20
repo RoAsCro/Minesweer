@@ -28,9 +28,6 @@ public class Board {
             ignore.add(c);},
                 coord);
         List<Location> unconsumed = new ArrayList<>(this.locationList);
-//        this.locationList.stream()
-//                .filter(l -> !ignore.contains(l.coord))
-//                .forEach(unconsumed::add);
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
             Location current = unconsumed.remove(
@@ -134,9 +131,8 @@ public class Board {
                 for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
                     try {
                         consumer.accept(new Coordinate(adjX, adjY));
-                    } catch (BoardLimitException _) {
+                    } catch (BoardLimitException ignore) {
                         continue;
-                        // Todo reconsider
                     }
                 }
             }
