@@ -19,7 +19,7 @@ public class GUIInterface implements UserInterface {
 
     private final JFrame frame  = new JFrame("Minesweeper");
     private final JPanel displayPanel = new JPanel();
-    private final JLabel notificationLabel = new JLabel();
+    private final JLabel notificationLabel = new JLabel("", SwingConstants.CENTER);
     private final JTextField field = new JTextField();
     private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
     private final Color buttonColor = new JButton().getBackground();
@@ -34,9 +34,12 @@ public class GUIInterface implements UserInterface {
 
     public GUIInterface(){
         this.frame.add(this.displayPanel);
-        this.displayPanel.add(notificationLabel);
-        this.displayPanel.add(timerDisplay);
-        this.timer = new Timer(1000, e -> timerDisplay.setText("Time taken: " + (time+=1)));
+        this.displayPanel.add(this.notificationLabel);
+        this.displayPanel.add(this.timerDisplay);
+        this.displayPanel.setSize(WIDTH / 2, HEIGHT);
+        this.notificationLabel.setSize(WIDTH /2, HEIGHT);
+        this.notificationLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        this.timer = new Timer(1000, e -> timerDisplay.setText("<html><p>Time taken: " + (time+=1) + "</p></html>"));
         this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -97,13 +100,13 @@ public class GUIInterface implements UserInterface {
 
             if (usingMax && this.inputInt > max) {
                 this.inputInt = -1;
-                this.notificationLabel.setText("Must be no more than " + max +
-                        (this.firstDisplay ? " - " + prompt : ""));
+                display("Must be no more than " + max + "<br></br>" +
+                        (this.firstDisplay ? prompt : ""));
                 continue;
             }
             else if (inputInt <= 0) {
-                this.notificationLabel.setText("Must be a positive number" +
-                        (this.firstDisplay ? " - " + prompt : ""));
+                display("Must be a positive number" + "<br></br>" +
+                        (this.firstDisplay ? prompt : ""));
                 inputInt = -1;
                 continue;
             }
@@ -122,7 +125,7 @@ public class GUIInterface implements UserInterface {
 
     @Override
     public void display(String prompt) {
-        this.notificationLabel.setText(prompt);
+        this.notificationLabel.setText("<html><p>" + prompt + "</p><b></b></html>");
     }
 
     @Override
