@@ -63,19 +63,18 @@ public class Game {
                         displayBoard();
                         break;
                     case 2:
-                        coord = this.userInterface.getCoordinate("Please enter the coordinate " +
+                        coord = getAndValidateCoordinate("Please enter the coordinate " +
                                 "of the location you want to select.\n" +
                                 "(Coordinates should be x,y - enter the column first, then the row)");
                         if (coord == null) {
                             continue;
                         }
-                        // Todo move rsponsilbilty for out of bounds here nad case 3
                         if (!makeMove(coord)){
                             go = false;
                         }
                         break;
                     case 3:
-                        coord = this.userInterface.getCoordinate("Please enter the coordinate " +
+                        coord = getAndValidateCoordinate("Please enter the coordinate " +
                                 "of the location you want to flag or unflag.\n" +
                                 "Coordinates should be x,y - enter the column first, then the row)");
                         if (coord == null) {
@@ -133,6 +132,19 @@ public class Game {
                 (size * size - this.revealedCount - this.board.getMines()) +
                 " safe squares left to uncover.");
         this.userInterface.displayBoard(this.board, false);
+    }
+
+    private Coordinate getAndValidateCoordinate(String prompt) {
+        Coordinate coord = this.userInterface.getCoordinate(prompt);
+        if (coord == null) {
+            return null;
+        }
+        if (coord.getX() < 0 || coord.getY() < 0 ||
+                coord.getY() > this.board.getSize() || coord.getX() > this.board.getSize()) {
+            this.userInterface.display("That location is not on the board!");
+            return null;
+        }
+        return coord;
     }
 
     private void revealLoop(Coordinate coord) {
