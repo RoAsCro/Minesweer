@@ -5,8 +5,9 @@ import java.util.List;
 
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.25f;
-    private static final int MINE_DEDUCTION = 9;
     private static final int BOARD_MIN = 5;
+    private static final int BOARD_MAX = 25;
+    private static final int MINE_DEDUCTION = 9;
 
     private final UserInterface userInterface;
 
@@ -21,11 +22,12 @@ public class Game {
     public void setUp(){
         this.userInterface.display("Welcome to Minesweeper!");
         int size = 0;
-        String prompt = "Please enter the desired length of the board - boards are square.";
+        String prompt = "Please enter the desired length of the board - boards are square and can be at most " + 25 +
+                " squares long.";
         String currentPrompt = prompt;
         while (size < BOARD_MIN) {
             size = this.userInterface
-                    .getInt(currentPrompt);
+                    .getInt(currentPrompt, BOARD_MAX);
             if (size < BOARD_MIN) {
                 currentPrompt = prompt + " - The board must be at least length " + BOARD_MIN + ".";
             }
@@ -103,6 +105,10 @@ public class Game {
             this.userInterface.display("That location is already revealed!");
             return true;
         }
+        if (this.board.isFlagged(coord)) {
+            this.userInterface.display("You can't reveal a flagged square!");
+            return true;
+        }
         if (this.board.isMined(coord)) {
             this.userInterface.display("You hit a bomb!");
             return false;
@@ -135,7 +141,7 @@ public class Game {
             return;
         }
         used.add(coord);
-        if (this.board.isMined(coord) || this.board.isRevealed(coord)) {
+        if (this.board.isMined(coord) || this.board.isRevealed(coord)  || this.board.isFlagged(coord)) {
             return;
         }
         this.board.reveal(coord);
