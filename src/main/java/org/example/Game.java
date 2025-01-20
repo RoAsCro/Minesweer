@@ -7,7 +7,7 @@ import java.util.List;
 public class Game {
     private static final float MAX_MINE_PERCENTAGE = 0.25f;
     private static final int BOARD_MIN = 5;
-    private static final int BOARD_MAX = 999;
+    private static final int BOARD_MAX = 25;
     private static final int MINE_DEDUCTION = 9;
 
     private final UserInterface userInterface;
@@ -119,7 +119,7 @@ public class Game {
 //        reveal(coord, new ArrayList<>());
         int size = this.board.getSize();
 
-        if (revealedCount == size * size - this.board.getMines()) {
+        if (this.revealedCount == size * size - this.board.getMines()) {
             this.userInterface.display("You win!");
 
             return false;
@@ -129,7 +129,8 @@ public class Game {
     }
     public void displayBoard(){
         int size = this.board.getSize();
-        this.userInterface.display("There are currently " + (size * size - this.revealedCount) +
+        this.userInterface.display("There are currently " +
+                (size * size - this.revealedCount - this.board.getMines()) +
                 " safe squares left to uncover.");
         this.userInterface.displayBoard(this.board, false);
     }
@@ -156,15 +157,13 @@ public class Game {
     }
 
     private void revealAdd(Coordinate coord, List<Coordinate> used, List<Coordinate> stack) {
-        if (used.contains(coord) || stack.contains(coord)) {
+        if (used.contains(coord)) {
             return;
         }
         used.add(coord);
         if (this.board.isMined(coord) || this.board.isRevealed(coord) || this.board.isFlagged(coord)) {
             return;
         }
-
-        used.add(coord);
         stack.add(coord);
     }
 
