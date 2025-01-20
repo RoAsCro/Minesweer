@@ -27,14 +27,18 @@ public class Board {
             getLocation(c); //Running this prevents null pointer exceptions
             ignore.add(c);},
                 coord);
-        List<Location> unconsumed = new ArrayList<>();
-        this.locationList.stream()
-                .filter(l -> !ignore.contains(l.coord))
-                .forEach(unconsumed::add);
+        List<Location> unconsumed = new ArrayList<>(this.locationList);
+//        this.locationList.stream()
+//                .filter(l -> !ignore.contains(l.coord))
+//                .forEach(unconsumed::add);
         Random random = new Random();
         for (int i = 0; i < this.mines; i++) {
             Location current = unconsumed.remove(
                     random.nextInt(unconsumed.size()));
+            if (ignore.contains(current.coord)) {
+                i--;
+                continue;
+            }
             current.mined = true;
             // Increases adjacency of all adjacent Locations by one
             this.iterator.iterateAdjacent(c -> getLocation(c).adjacency++,

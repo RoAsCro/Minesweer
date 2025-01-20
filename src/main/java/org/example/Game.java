@@ -21,11 +21,13 @@ public class Game {
     public void setUp(){
         this.userInterface.display("Welcome to Minesweeper!");
         int size = 0;
+        String prompt = "Please enter the desired length of the board - boards are square.";
+        String currentPrompt = prompt;
         while (size < BOARD_MIN) {
             size = this.userInterface
-                    .getInt("Please enter the desired length of the board - boards are square.");
+                    .getInt(currentPrompt);
             if (size < BOARD_MIN) {
-                this.userInterface.display("The board must be at least length " + BOARD_MIN + ".");
+                currentPrompt = prompt + " - The board must be at least length " + BOARD_MIN + ".";
             }
         }
 

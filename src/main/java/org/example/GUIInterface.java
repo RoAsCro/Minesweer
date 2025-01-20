@@ -15,8 +15,7 @@ public class GUIInterface implements UserInterface {
     int input =-1;
     String coord = null;
     Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
-    ConsoleInterface consoleInterface = new ConsoleInterface();
-
+    Color buttonColor = null;
 
     public GUIInterface(){
         frame.add(displayPanel);
@@ -25,25 +24,25 @@ public class GUIInterface implements UserInterface {
 
         frame.setLayout(new GridLayout(3, 1));
 
-        field.addKeyListener(new KeyListener() {
+        this.field.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    System.out.println("key");
-                    input = Integer.parseInt(field.getText());
-                    System.out.println(input);
+                    try {
+                        input = Integer.parseInt(field.getText());
+                    } catch (NumberFormatException _) {
+                    }
                 }
             }
             @Override
             public void keyReleased(KeyEvent e) {}
         });
-        displayPanel.add(field);
-        field.setColumns(5);
-//        frame.pack();
-        frame.setSize(500, 500);
+        displayPanel.add(this.field);
+        this.field.setColumns(5);
+        this.frame.setSize(750, 500);
 
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
     public void listen(){
@@ -60,24 +59,37 @@ public class GUIInterface implements UserInterface {
         if (firstDisplay) {
             display(prompt);
         }
-        System.out.println("int");
         input = -1;
-        while (input == -1) {
-            try {
-                wait(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        boolean go = true;
+        while (go) {
+            while (input == -1) {
+                try {
+                    wait(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
-
+            if (max != -1 && input > max) {
+                input = -1;
+                this.notificationLabel.setText("Must be no more than " + max +
+                        (firstDisplay ? " - " + prompt : ""));
+                continue;
+            }
+            else if (input <= 0) {
+                this.notificationLabel.setText("Must be a positive number" +
+                        (firstDisplay ? " - " + prompt : ""));
+                input = -1;
+                continue;
+            }
+            go = false;
+            this.field.setText("");
         }
-        System.out.println(input);
-
         return input;
     }
 
     @Override
     synchronized public Coordinate getCoordinate(String prompt) {
-        System.out.println("Coord");
         int x;
         int y;
         String[] parts = coord.split(",");
@@ -90,12 +102,10 @@ public class GUIInterface implements UserInterface {
     @Override
     public void display(String prompt) {
         this.notificationLabel.setText(prompt);
-        System.out.println(prompt);
     }
 
     @Override
     public void displayBoard(Board board, boolean showBombs) {
-        consoleInterface.displayBoard(board, showBombs);
         if (firstDisplay) {
             this.displayPanel.remove(this.field);
             frame.setLayout(new GridLayout(board.getSize() + 1, 1));
@@ -109,6 +119,7 @@ public class GUIInterface implements UserInterface {
                     button.setText("?");
                     buttonMap.put(new Coordinate(i, j), button);
                     row.add(button);
+                    this.buttonColor = button.getBackground();
 
                 }
                 this.frame.add(row);
@@ -130,8 +141,16 @@ public class GUIInterface implements UserInterface {
                         } else {
                             if (board.isFlagged(c)) {
                                 button.setText("!");
+                                button.setBackground(Color.YELLOW);
                             } else {
                                 button.setText("?");
+                                button.setBackground(this.buttonColor);
+                            }
+                            if (showBombs) {
+                                if (board.isMined(c)) {
+                                    button.setText("x");
+                                    button.setBackground(Color.RED);
+                                }
                             }
                         }
                     }
@@ -153,16 +172,11 @@ public class GUIInterface implements UserInterface {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        System.out.println("Left");
-
                         input = 2;
                     } else if (SwingUtilities.isRightMouseButton(e)) {
-                        System.out.println("Right");
                         input = 3;
                     }
-                    System.out.println("Button");
                     coord = x + "," + y;
-                    System.out.println(coord);
                 }
 
                 @Override
