@@ -39,7 +39,7 @@ public class ConsoleInterface implements UserInterface {
     public Coordinate getCoordinate(String prompt) {
         while (true) {
             display(prompt);
-            display("Please enter this as two numbers separated by a comma, " +
+            display("Please enter this as two positive numbers separated by a comma, " +
                     "e.g. '2,4'");
             display("Enter '0' to go back.");
             Scanner reader = new Scanner(System.in);
