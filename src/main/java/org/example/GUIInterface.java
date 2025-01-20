@@ -17,11 +17,11 @@ public class GUIInterface implements UserInterface {
     private static final int FLAG_CODE = 3;
 
 
-    private JFrame frame  = new JFrame("Minesweeper");
-    private JPanel displayPanel = new JPanel();
-    private JLabel notificationLabel = new JLabel();
+    private final JFrame frame  = new JFrame("Minesweeper");
+    private final JPanel displayPanel = new JPanel();
+    private final JLabel notificationLabel = new JLabel();
     private boolean firstDisplay = true;
-    private JTextField field = new JTextField();
+    private final JTextField field = new JTextField();
     private int input =-1;
     private String coord = null;
     private Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
@@ -41,6 +41,7 @@ public class GUIInterface implements UserInterface {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     try {
                         input = Integer.parseInt(field.getText());
+                        notifyThreads();
                     } catch (NumberFormatException _) {
                     }
                 }
@@ -53,6 +54,10 @@ public class GUIInterface implements UserInterface {
         this.frame.setSize(WIDTH, HEIGHT);
 
         this.frame.setVisible(true);
+    }
+
+    synchronized public void notifyThreads(){
+        notify();
     }
 
     @Override
@@ -70,7 +75,7 @@ public class GUIInterface implements UserInterface {
         while (go) {
             while (input == -1) {
                 try {
-                    wait(500);
+                    wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -183,6 +188,7 @@ public class GUIInterface implements UserInterface {
                         input = FLAG_CODE;
                     }
                     coord = x + "," + y;
+                    notifyThreads();
                 }
 
                 @Override
