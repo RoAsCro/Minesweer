@@ -24,12 +24,12 @@ public class GUIInterface implements UserInterface {
     private final JTextField field = new JTextField();
     private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
     private final Color buttonColor = new JButton().getBackground();
-    private int input =-1;
-    private Coordinate coord = null;
+    private int inputInt =-1;
+    private Coordinate inputCoord = null;
 
 
     public GUIInterface(){
-        this.frame.add(displayPanel);
+        this.frame.add(this.displayPanel);
         this.displayPanel.add(notificationLabel);
         this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter(){
@@ -46,7 +46,7 @@ public class GUIInterface implements UserInterface {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     try {
-                        input = Integer.parseInt(field.getText());
+                        inputInt = Integer.parseInt(field.getText());
                         notifyThreads();
                     } catch (NumberFormatException _) {
                     }
@@ -80,7 +80,7 @@ public class GUIInterface implements UserInterface {
         if (this.firstDisplay) { //We only care about the prompt before the board is on screen
             display(prompt);
         }
-        this.input = -1;
+        this.inputInt = -1;
         boolean go = true;
         while (go) {
             try {
@@ -89,28 +89,28 @@ public class GUIInterface implements UserInterface {
                 throw new RuntimeException(e);
             }
 
-            if (usingMax && input > max) {
-                input = -1;
+            if (usingMax && this.inputInt > max) {
+                this.inputInt = -1;
                 this.notificationLabel.setText("Must be no more than " + max +
-                        (firstDisplay ? " - " + prompt : ""));
+                        (this.firstDisplay ? " - " + prompt : ""));
                 continue;
             }
-            else if (input <= 0) {
+            else if (inputInt <= 0) {
                 this.notificationLabel.setText("Must be a positive number" +
-                        (firstDisplay ? " - " + prompt : ""));
-                input = -1;
+                        (this.firstDisplay ? " - " + prompt : ""));
+                inputInt = -1;
                 continue;
             }
             go = false;
             this.field.setText("");
         }
-        return input;
+        return this.inputInt;
     }
 
     @Override
     synchronized public Coordinate getCoordinate(String prompt) {
-        Coordinate inUse = this.coord;
-        this.coord = null;
+        Coordinate inUse = this.inputCoord;
+        this.inputCoord = null;
         return inUse;
     }
 
@@ -121,9 +121,9 @@ public class GUIInterface implements UserInterface {
 
     @Override
     public void displayBoard(Board board, boolean showBombs) {
-        if (firstDisplay) {
+        if (this.firstDisplay) {
             this.displayPanel.remove(this.field);
-            frame.setLayout(new GridLayout(board.getSize() + 1, 1));
+            this.frame.setLayout(new GridLayout(board.getSize() + 1, 1));
             for (int i = 0; i < board.getSize(); i++) {
                 JPanel row = new JPanel();
                 row.setLayout(new GridLayout(1, board.getSize()));
@@ -137,8 +137,8 @@ public class GUIInterface implements UserInterface {
                 }
                 this.frame.add(row);
             }
-            frame.pack();
-            firstDisplay = false;
+            this.frame.pack();
+            this.firstDisplay = false;
         } else {
             board.getIterator().iterateAll(c ->
                     {
@@ -172,13 +172,9 @@ public class GUIInterface implements UserInterface {
 
     }
     private class CoordButton extends JButton {
-        int x = 0;
-        int y = 0;
         Coordinate buttonCoord;
 
         public CoordButton(int x, int y) {
-            this.x = x;
-            this.y = y;
             this.buttonCoord = new Coordinate(x, y);
             addMouseListener(new MouseListener() {
                 @Override
@@ -187,11 +183,11 @@ public class GUIInterface implements UserInterface {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        input = MOVE_CODE;
+                        inputInt = MOVE_CODE;
                     } else if (SwingUtilities.isRightMouseButton(e)) {
-                        input = FLAG_CODE;
+                        inputInt = FLAG_CODE;
                     }
-                    coord = buttonCoord;
+                    inputCoord = buttonCoord;
                     notifyThreads();
                 }
 
