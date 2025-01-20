@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -147,9 +146,8 @@ public class Game {
             if (this.board.getAdjacency(current) > 0) {
                 continue;
             }
-            this.board.getIterator().iterateAdjacent(c -> {
-                        revealAdd(c, used, stack);
-                    },
+            this.board.getIterator().iterateAdjacent(c ->
+                        revealAdd(c, used, stack),
                     current);
 
         }

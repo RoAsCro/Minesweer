@@ -20,10 +20,11 @@ public class GUIInterface implements UserInterface {
     private final JFrame frame  = new JFrame("Minesweeper");
     private final JPanel displayPanel = new JPanel();
     private final JLabel notificationLabel = new JLabel();
-    private boolean firstDisplay = true;
     private final JTextField field = new JTextField();
     private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
     private final Color buttonColor = new JButton().getBackground();
+
+    private boolean firstDisplay = true;
     private int inputInt =-1;
     private Coordinate inputCoord = null;
 
