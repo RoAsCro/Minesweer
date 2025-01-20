@@ -7,22 +7,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GUIInterface implements UserInterface {
-    JFrame frame  = new JFrame("Minesweeper");
-    JPanel displayPanel = new JPanel();
-    JLabel notificationLabel = new JLabel();
-    boolean firstDisplay = true;
-    JTextField field = new JTextField();
-    int input =-1;
-    String coord = null;
-    Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
-    Color buttonColor = null;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 500;
+    private static final int GRID_ROWS = 3;
+    private static final int GRID_COLS = 3;
+    private static final int FIELD_COLS = 5;
+    private static final int BUTTON_SIZE = 10;
+    private static final int MOVE_CODE = 2;
+    private static final int FLAG_CODE = 3;
+
+
+    private JFrame frame  = new JFrame("Minesweeper");
+    private JPanel displayPanel = new JPanel();
+    private JLabel notificationLabel = new JLabel();
+    private boolean firstDisplay = true;
+    private JTextField field = new JTextField();
+    private int input =-1;
+    private String coord = null;
+    private Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
+    private Color buttonColor = null;
 
     public GUIInterface(){
         frame.add(displayPanel);
         displayPanel.add(notificationLabel);
 
 
-        frame.setLayout(new GridLayout(3, 1));
+        frame.setLayout(new GridLayout(GRID_ROWS, GRID_COLS));
 
         this.field.addKeyListener(new KeyListener() {
             @Override
@@ -39,14 +49,10 @@ public class GUIInterface implements UserInterface {
             public void keyReleased(KeyEvent e) {}
         });
         displayPanel.add(this.field);
-        this.field.setColumns(5);
-        this.frame.setSize(750, 500);
+        this.field.setColumns(FIELD_COLS);
+        this.frame.setSize(WIDTH, HEIGHT);
 
         this.frame.setVisible(true);
-    }
-
-    public void listen(){
-
     }
 
     @Override
@@ -115,7 +121,7 @@ public class GUIInterface implements UserInterface {
                 for (int j = 0; j < board.getSize(); j++) {
 
                     CoordButton button = new CoordButton(i, j);
-                    button.setSize(10, 10);
+                    button.setSize(BUTTON_SIZE, BUTTON_SIZE);
                     button.setText("?");
                     buttonMap.put(new Coordinate(i, j), button);
                     row.add(button);
@@ -172,9 +178,9 @@ public class GUIInterface implements UserInterface {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        input = 2;
+                        input = MOVE_CODE;
                     } else if (SwingUtilities.isRightMouseButton(e)) {
-                        input = 3;
+                        input = FLAG_CODE;
                     }
                     coord = x + "," + y;
                 }
