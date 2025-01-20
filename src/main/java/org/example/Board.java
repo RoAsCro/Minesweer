@@ -24,7 +24,7 @@ public class Board {
         List<Coordinate> ignore = new LinkedList<>();
         // Start location and all adjacent locations will not be mined
         this.iterator.iterateAdjacent(c -> {
-            getLocation(c); //Running this prevents null pointer exceptions
+            //Running this prevents null pointer exceptions
             ignore.add(c);},
                 coord);
         List<Location> unconsumed = new ArrayList<>(this.locationList);
@@ -122,8 +122,8 @@ public class Board {
         public void iterateAdjacent(Consumer<Coordinate> consumer, Coordinate coord) {
             for (int adjX = coord.getX()-1; adjX <= coord.getX()+1; adjX++) {
                 for (int adjY = coord.getY()-1; adjY <= coord.getY()+1; adjY++) {
-                    if (coord.getX() < 0 || coord.getY() < 0 ||
-                            coord.getY() > this.board.getSize() || coord.getX() > this.board.getSize()){
+                    if (adjX < 0 || adjY < 0 ||
+                            adjX >= this.board.getSize() || adjY >= this.board.getSize()){
                         continue;
                     }
                     consumer.accept(new Coordinate(adjX, adjY));

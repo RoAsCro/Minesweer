@@ -136,7 +136,7 @@ public class Game {
             return null;
         }
         if (coord.getX() < 0 || coord.getY() < 0 ||
-                coord.getY() > this.board.getSize() || coord.getX() > this.board.getSize()) {
+                coord.getY() >= this.board.getSize() || coord.getX() >= this.board.getSize()) {
             this.userInterface.display("That location is not on the board!");
             return null;
         }
