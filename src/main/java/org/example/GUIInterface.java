@@ -25,7 +25,7 @@ public class GUIInterface implements UserInterface {
     private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
     private final Color buttonColor = new JButton().getBackground();
     private int input =-1;
-    private String coord = null;
+    private Coordinate coord = null;
 
 
     public GUIInterface(){
@@ -109,13 +109,9 @@ public class GUIInterface implements UserInterface {
 
     @Override
     synchronized public Coordinate getCoordinate(String prompt) {
-        int x;
-        int y;
-        String[] parts = coord.split(",");
-        x = Integer.parseInt(parts[0]);
-        y = Integer.parseInt(parts[1]);
-        coord = null;
-        return new Coordinate(x,y);
+        Coordinate inUse = this.coord;
+        this.coord = null;
+        return inUse;
     }
 
     @Override
@@ -178,10 +174,12 @@ public class GUIInterface implements UserInterface {
     private class CoordButton extends JButton {
         int x = 0;
         int y = 0;
+        Coordinate buttonCoord;
 
         public CoordButton(int x, int y) {
             this.x = x;
             this.y = y;
+            this.buttonCoord = new Coordinate(x, y);
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {}
@@ -193,7 +191,7 @@ public class GUIInterface implements UserInterface {
                     } else if (SwingUtilities.isRightMouseButton(e)) {
                         input = FLAG_CODE;
                     }
-                    coord = x + "," + y;
+                    coord = buttonCoord;
                     notifyThreads();
                 }
 
