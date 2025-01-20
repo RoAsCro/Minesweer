@@ -69,6 +69,7 @@ public class Game {
                         if (coord == null) {
                             continue;
                         }
+                        // Todo move rsponsilbilty for out of bounds here nad case 3
                         if (!makeMove(coord)){
                             go = false;
                         }
@@ -98,16 +99,16 @@ public class Game {
     }
 
     public boolean makeMove(Coordinate coord) throws BoardLimitException{
+        if (this.board.isFlagged(coord)) {
+            this.userInterface.display("You can't reveal a flagged square!");
+            return true;
+        }
         if (this.firstMove) {
             this.board.generate(coord);
             this.firstMove = false;
         }
         if (this.board.isRevealed(coord)){
             this.userInterface.display("That location is already revealed!");
-            return true;
-        }
-        if (this.board.isFlagged(coord)) {
-            this.userInterface.display("You can't reveal a flagged square!");
             return true;
         }
         if (this.board.isMined(coord)) {

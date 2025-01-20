@@ -7,7 +7,7 @@ public interface UserInterface {
      * Prompts user for an integer. Will only return positive values equal to or less than the max.
      * @param prompt an additional prompt for the user
      * @param max the maximum value, inclusive, of the integer to be returned
-     * @return an integer from the user
+     * @return a positive integer from the user less than or equal to the maximum
      */
     int getInt(String prompt, int max);
 
