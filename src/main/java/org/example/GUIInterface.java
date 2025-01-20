@@ -22,22 +22,23 @@ public class GUIInterface implements UserInterface {
     private final JLabel notificationLabel = new JLabel();
     private boolean firstDisplay = true;
     private final JTextField field = new JTextField();
+    private final Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
+    private final Color buttonColor = new JButton().getBackground();
     private int input =-1;
     private String coord = null;
-    private Map <Coordinate, CoordButton> buttonMap = new HashMap<>();
-    private Color buttonColor = new JButton().getBackground();
+
 
     public GUIInterface(){
-        frame.add(displayPanel);
-        displayPanel.add(notificationLabel);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter(){
+        this.frame.add(displayPanel);
+        this.displayPanel.add(notificationLabel);
+        this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                     System.exit(0);
             }
         });
 
-        frame.setLayout(new GridLayout(GRID_ROWS, GRID_COLS));
+        this.frame.setLayout(new GridLayout(GRID_ROWS, GRID_COLS));
 
         this.field.addKeyListener(new KeyListener() {
             @Override
@@ -54,7 +55,7 @@ public class GUIInterface implements UserInterface {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
-        displayPanel.add(this.field);
+        this.displayPanel.add(this.field);
         this.field.setColumns(FIELD_COLS);
         this.frame.setSize(WIDTH, HEIGHT);
 
@@ -67,26 +68,28 @@ public class GUIInterface implements UserInterface {
 
     @Override
     public int getInt(String prompt) {
-        return getInt(prompt, -1);
+        return getIntHelper(prompt, -1, false);
     }
 
     @Override
     synchronized public int getInt(String prompt, int max) {
-        if (firstDisplay) {
+        return getIntHelper(prompt, max, true);
+    }
+
+    synchronized private int getIntHelper(String prompt, int max, boolean usingMax) {
+        if (this.firstDisplay) { //We only care about the prompt before the board is on screen
             display(prompt);
         }
-        input = -1;
+        this.input = -1;
         boolean go = true;
         while (go) {
-            while (input == -1) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            if (max != -1 && input > max) {
+
+            if (usingMax && input > max) {
                 input = -1;
                 this.notificationLabel.setText("Must be no more than " + max +
                         (firstDisplay ? " - " + prompt : ""));
